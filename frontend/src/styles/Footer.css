@@ -1,0 +1,14 @@
+.Footers {
+    position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(73, 69, 69);
+  color: white;
+  text-align: center;
+  height: 45px;
+}
+
+.Footer {
+  margin-top: -80px;
+}

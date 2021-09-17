@@ -1,0 +1,46 @@
+.iconUser {
+    font-size: 40px;
+}
+
+.header {
+    margin-top: -145px;
+    margin-left: 160px;
+}
+
+.headers {
+    border-bottom: solid 3px rgb(255, 0, 0);
+    max-height: 59px;
+}
+
+.iconRight {
+    margin-right: 145px;
+    margin-top: -25px;
+}
+
+.h1 {
+    margin-bottom: -280px;
+}
+
+
+ul , li {
+    list-style-type: none;
+    display: flex;
+  }
+
+.nav1 button {
+    margin-right: 15px;
+    border: none;
+    position: absolute;
+    top: 25px;
+    right: 100px;
+    color: #0A58CA;
+    background-color: white;
+}
+
+.nav2 button {
+    position: absolute;
+    top: 25px;
+    color: #0A58CA;
+    border: none;
+    background-color: white;
+}

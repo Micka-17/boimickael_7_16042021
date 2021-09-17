@@ -1,59 +1,54 @@
-import {Children, React, useState} from "react";
-import PropTypes from 'prop-types'
-import { ApiErrors } from "../utils/api";
+import { React } from "react"
+import Axios from 'axios'
+import Cookies from 'js-cookie'
+import { useHistory } from "react-router-dom"
 
 
-export function LoginForm({onConnect}) {
+export function LoginForm() {
 
-    const [error, setError] = useState(null)
-    const [loading, setloading] = useState(false)
-    const handleSubmit = async function (e) {
-        setError(null)
-        setloading(true)
+    const history = useHistory();
+
+    const SubmitLogin = async function (e) {
         e.preventDefault()
-        const data = new FormData(e.target)
-         try {
-        const user = await fetch("http://localhost:3000/api/auth/login",
-            {
-                method: 'POST',
-                body: data,
-            })
-                onConnect(user)
-            } catch (e) {
-                if (e instanceof ApiErrors) {
-                    setError(e.errors[0].message)
-            } else {
-                console.error(e)
-            } 
-                setloading(false)
-            }      
+
+        const data = {
+            email: document.querySelector('input.email').value,
+            password: document.querySelector('input.password').value
+        }
+
+        try {
+            await Axios.post("http://localhost:3000/api/auth/login",
+                {
+                    email: data.email,
+                    password: data.password,
+                }).then(function (ReloadPage) {
+                    history.push("/post");
+                    document.location.reload();
+                })
+            Cookies.set('token', 'true');
+        } catch (e) {
+            console.log(e);
+            const error28 = (e.response.data.error);
+            console.log(error28);
+        }
     }
 
     return (
-        <form className="container mt-4" onSubmit={handleSubmit}>
+        <form className="container mt-4" onSubmit={SubmitLogin}>
             <h2>Connexion</h2>
-            {error && <Alert>{error}</Alert>}
             <div className="form-group">
                 <label htmlFor="email">Email: </label>
-                <input type="email" name="email" className="email" className="form-control" required/>
+                <input type="email" name="email" className="form-control email" required />
             </div>
             <div className="form-group">
                 <label htmlFor="password">Mot de passe: </label>
-                <input type="password" name="password" className="password" className="form-control" required/>
+                <input type="password" name="password" className="form-control password" required />
             </div>
-            <button disabled={loading} type="submit" value="LOGIN" className="btn btn-primary" >Connexion</button>
+            <button
+                type="submit"
+                value="LOGIN"
+                className="btn btn-primary"
+            >Connexion</button>
         </form>
-    )
-}
-
-LoginForm.propTypes = {
-    onConnect: PropTypes.func.isRequired
-}
-
-function Alert ({message}) {
-    return(
-        <div className="alert alert-danger">
-            {Children}
-        </div>
     )
 }

@@ -1,16 +1,11 @@
 import Axios from 'axios';
-import {Children, React, useState} from "react";
-import PropTypes from 'prop-types'
+import { React, useState } from "react";
 
 export function SignupForm({ Signup }) {
-    const [error, setError] = useState(null)
-    const [loading, setloading] = useState(false)
 
     const [details, setDetails] = useState({ firstName: "", lastName: "", eamil: "", password: "" });
 
     const submitHandler = async function (e) {
-        setError(null)
-        setloading(true)
         e.preventDefault();
         
         Signup(details);
@@ -24,6 +19,7 @@ export function SignupForm({ Signup }) {
             password: details.password,
         }).then((response) => {
             // w.WriteHeader(http.StatusOK)
+            alert("Inscription prise en compte !")
             console.log(response);
             console.log('test'); 
         }).catch((e) => {
@@ -35,37 +31,24 @@ export function SignupForm({ Signup }) {
         <form onSubmit={submitHandler}>
             <div className="container mt-4">
                 <h2>Inscription</h2>
-                {error && <Alert>{error}</Alert>}
                 <div className="form-group">
                     <label htmlFor="firstName">Nom : </label>
-                    <input type="text" name="firstName" id="firstName" className="form-control" required onChange={e => setDetails({ ...details, firstName: e.target.value })} value={details.name} />
+                    <input type="text" name="firstName" id="firstName" className="form-control" required onChange={e => setDetails({ ...details, firstName: e.target.value })} value={details.firstName} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="lastName">Prenom : </label>
-                    <input type="text" name="lastName" id="lastName" className="form-control" required onChange={e => setDetails({ ...details, lastName: e.target.value })} value={details.name} />
+                    <input type="text" name="lastName" id="lastName" className="form-control" required onChange={e => setDetails({ ...details, lastName: e.target.value })} value={details.lastName} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email: </label>
-                    <input type="email" name="email" className="email" className="form-control" required onChange={e => setDetails({ ...details, email: e.target.value })} value={details.email} />
+                    <input type="email" name="email" className="form-control email" required onChange={e => setDetails({ ...details, email: e.target.value })} value={details.email} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Mot de passe: </label>
-                    <input type="password" name="password" className="password" className="form-control" required onChange={e => setDetails({ ...details, password: e.target.value })} value={details.password} />
+                    <input type="password" name="password" className="form-control password" required onChange={e => setDetails({ ...details, password: e.target.value })} value={details.password} />
                 </div>
-                <button disabled={loading} type="submit" value="Signup" className="btn btn-primary" >Connexion</button>
+                <button type="submit" value="Signup" className="btn btn-primary" >Inscription</button>
             </div>
         </form> 
-    )
-}
-
-SignupForm.propTypes = {
-    onConnect: PropTypes.func.isRequired
-}
-
-function Alert ({message}) {
-    return(
-        <div className="alert alert-danger">
-            {Children}
-        </div>
     )
 }

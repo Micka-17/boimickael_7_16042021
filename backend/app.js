@@ -16,7 +16,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/posts', postRoutes);

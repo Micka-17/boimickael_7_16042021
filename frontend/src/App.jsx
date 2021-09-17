@@ -1,28 +1,38 @@
 import Banner from './App/Banner';
-import { React, useState, useEffect } from "react";
+import { React } from "react";
 import { LoginForm } from "./App/LoginForm";
+import { Account } from "./App/Account";
+import { Post } from './App/Post';
+import { Footer } from './App/Footer';
 import { SignupForm } from "./App/SignupForm";
-import { apiFetch } from "./utils/api";
-
+import "./styles/Styles.css"
+import Cookies from 'js-cookie'
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { NotFound } from './App/404';
 
 export default function App() {
-  const [user, setUser] = useState(null)
 
-  useEffect(function () {
-    apiFetch('/me')
-      .then(user => setUser)
-      .catch(() => setUser(false))
-  }, [])
-
-  if (user === null) {
-    return null;
+  const token = Cookies.get('token');
+  if (token === 'true') {
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/post" component={Post} />
+          <Route exact path="/account" component={Account} />
+          <Route path="/"  component={NotFound}/>
+        </Switch>
+      </Router>
+    )
+  } else {
+    return (
+      <div>
+        <Router>
+          <Banner />
+          <LoginForm />
+          <SignupForm />
+          <Footer />
+        </Router>
+      </div>
+    )
   }
-
-  return (
-    <div>
-      <div className="banner"> <Banner /></div>
-      <div className="SignForm"> <LoginForm onConnect={setUser} /> </div>,
-      <div className="LoginForm"> <SignupForm /> </div>
-    </div>
-  );
 };

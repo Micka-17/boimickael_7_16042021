@@ -20,7 +20,6 @@ exports.signup = (req, res, next) => {
 };
 
   exports.login = (req, res, next) => {
-    console.log("1          ");
     User.findOne({
       where: {
       email: req.body.email
@@ -28,7 +27,7 @@ exports.signup = (req, res, next) => {
     })
       .then(user => {
         if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+          return res.status(400).json({ error: 'Utilisateur non trouvé !' });
         }
         bcrypt.compare(req.body.password, user.password)
           .then(valid => {
@@ -40,13 +39,11 @@ exports.signup = (req, res, next) => {
               token: jwt.sign(
                 { userId: user._id },
                 'RANDOM_TOKEN_SECRET',
-                { expiresIn: '24h' }
+                { expiresIn: '48h' }
               )
             });
           })
           .catch(error => res.status(501).json( { error } ));
-          console.log("2          ");
       })
       .catch(error => res.status(500).json({ error }));
-      console.log("3          ");
   };

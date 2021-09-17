@@ -43,10 +43,6 @@ const User = sequelize.define('User', {
     allowNull: false,
     len: [8, 55]
   },
-  role: {
-    type: DataTypes.STRING,
-    allowNull: true
-  },
   isAdmin: {
     type: DataTypes.BOOLEAN,
   },
