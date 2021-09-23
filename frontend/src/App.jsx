@@ -1,38 +1,46 @@
-import Banner from './App/Banner';
+import Main from './App/Main';
 import { React } from "react";
-import { LoginForm } from "./App/LoginForm";
 import { Account } from "./App/Account";
 import { Post } from './App/Post';
-import { Footer } from './App/Footer';
-import { SignupForm } from "./App/SignupForm";
 import "./styles/Styles.css"
-import Cookies from 'js-cookie'
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { BrowserRouter as Router, Switch } from "react-router-dom"
 import { NotFound } from './App/404';
+import { GuardProvider, GuardedRoute } from 'react-router-guards';
+import food from "./img/food.jpg";
 
 export default function App() {
 
-  const token = Cookies.get('token');
-  if (token === 'true') {
-    return (
-      <Router>
+  const recipeAuthor = "Efecan";
+  const recipeItem = {
+    title: "Avokado Ezmeli Taco",
+    date: "8 Haziran 2021, Salı",
+    image: food,
+    description:
+      "Bu kremsi ve baharatlı avokado sosu, günlük taco'larınızı hazırlamak için harika seçeneklerden biri. Geleneksel olarak flautas veya taquitos ile servis edilir, ancak bazı vegan enchiladalara da harika bir katkı sağlar.",
+  };
+
+  const like= 193;
+  const isLiked = true;
+
+  const token = localStorage.getItem('token');
+  const requireLogin = (to, from, next) => {
+      if (localStorage.getItem('token')) {
+        next();
+    } else {
+      next.redirect('/main');
+    }
+  };
+
+  return (
+    <Router>
+      <GuardProvider guards={[requireLogin]} error={Main} >
         <Switch>
-          <Route exact path="/post" component={Post} />
-          <Route exact path="/account" component={Account} />
-          <Route path="/"  component={NotFound}/>
+        <GuardedRoute path="/main" component={Main} />
+          <GuardedRoute path="/post" component={Post} />
+          <GuardedRoute path="/account" component={Account} />
+          <GuardedRoute path="/" component={NotFound} />
         </Switch>
-      </Router>
-    )
-  } else {
-    return (
-      <div>
-        <Router>
-          <Banner />
-          <LoginForm />
-          <SignupForm />
-          <Footer />
-        </Router>
-      </div>
-    )
-  }
+      </GuardProvider>
+    </Router>
+  )
 };

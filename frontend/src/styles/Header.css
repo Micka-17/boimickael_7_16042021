@@ -25,7 +25,16 @@
 ul , li {
     list-style-type: none;
     display: flex;
-  }
+}
+
+.nav0 button {
+    position: absolute;
+    top: 25px;
+    color: #0A58CA;
+    border: none;
+    background-color: white;
+    right: 185px;
+}
 
 .nav1 button {
     margin-right: 15px;

@@ -3,7 +3,7 @@ import { React, useState } from "react";
 
 export function SignupForm({ Signup }) {
 
-    const [details, setDetails] = useState({ firstName: "", lastName: "", eamil: "", password: "" });
+    const [details, setDetails] = useState({ firstName: "", lastName: "", email: "", password: "" });
 
     const submitHandler = async function (e) {
         e.preventDefault();
@@ -28,8 +28,9 @@ export function SignupForm({ Signup }) {
     };
 
     return (
+        <div className="container-sm right" >
         <form onSubmit={submitHandler}>
-            <div className="container mt-4">
+            <div className="mt-4">
                 <h2>Inscription</h2>
                 <div className="form-group">
                     <label htmlFor="firstName">Nom : </label>
@@ -50,5 +51,6 @@ export function SignupForm({ Signup }) {
                 <button type="submit" value="Signup" className="btn btn-primary" >Inscription</button>
             </div>
         </form> 
+        </div>
     )
 }
