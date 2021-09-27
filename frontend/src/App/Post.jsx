@@ -4,25 +4,49 @@ import '../styles/Header.css'
 import header from "../Groupomania_Logos/icon-left-font.png"
 import { Link, useHistory } from "react-router-dom";
 import "../styles/Cards.css";
-import food from "../img/food.jpg";
 import Card from './Card';
+import "../styles/Styles.css"
+import { useState, useCallback } from 'react'
+import FormPost from './FormPost';
+import Modal from '../utils/Modal';
+import Axios from 'axios';
 
 
 
 export function Post(props) {
 
-    const recipeAuthor = "Mickey";
-    const recipeItem = {
-        title: "Tacos a l'avocat",
-        date: "La date du jour",
-        image: food,
-        description:
-            "Ceci test la partie description de la card ",
-    };
+    const [postInfo, setPostInfo] = useState({ author: "toto", title: "Try", date: "one", image: "url", description: "ici", file: '' })
+    const [loaded, setLoaded] = useState(false)
+    const token = localStorage.getItem('token');
 
+    if (!loaded) {
+        const post = Axios({
+            method: "get",
+            url: "http://localhost:3000/api/posts/:id",
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        })
+        post.then((result) => {
+            setPostInfo(result.data)
+            setLoaded(true)
+        });
+    }
+
+    // post model
+    const author = "Mickey";
+    /* const item = {
+        title: setPostInfo.title,
+        date: setPostInfo.date,
+        image: setPostInfo.image,
+        description: setPostInfo.description,
+    };
+ */
+    console.log(postInfo);
     const like = 193;
     const isLiked = true;
 
+    // useHistory and logout
     const history = useHistory();
     const SubmitLogout = async function (e) {
         e.preventDefault()
@@ -30,11 +54,23 @@ export function Post(props) {
         localStorage.getItem('token');
     }
 
+    // do this with btn
+    const useToggle = function (initial = false) {
+        const [state, setState] = useState(initial)
+        return [state, useCallback(() => setState(state => !state))]
+    }
 
+    const [add, toggleAdd] = useToggle(false)
+
+    // any way
     const SubmitAccount = function (e) {
         e.preventDefault()
 
     }
+
+    const toto = 'toto'
+
+    // return form and post like html
     return (
         <div>
             <div className="headers">
@@ -44,7 +80,7 @@ export function Post(props) {
                     </div>
                     <div className="iconRight m-5">
                         <ul className="nav">
-                        <Link to="/post">
+                            <Link to="/post">
                                 <li className="nav0">
                                     <button type="submit"
                                         value="post"
@@ -75,17 +111,28 @@ export function Post(props) {
                     </div>
                 </div>
             </div>
-            <div className="App">
-                <header className="App-header">
-                    <Card
-                        author={recipeAuthor}
-                        title={recipeItem.title}
-                        date={recipeItem.date}
-                        description={recipeItem.description}
-                        liked={isLiked}
-                        likeCount={like}
-                    />
-                </header>
+            <div>
+                <div className="addPost m-5">
+                    <Modal title="Dites nous tous !!!" onClose={toggleAdd}>
+                        <FormPost />
+                    </Modal>
+                </div>
+                <div className="App">
+                    { postInfo != null 
+                    ?  <header className="App-header">
+                            <Card
+                                author={author}
+                                title={postInfo.title}
+                                date={postInfo.date}
+                                image={postInfo.image}
+                                description={postInfo.description}
+                                liked={isLiked}
+                                likeCount={like}
+                            />
+                        </header>
+                    : 'C\'est vide ici!'
+                    }
+                </div>
             </div>
         </div>
     )

@@ -8,7 +8,7 @@ import { useState } from 'react'
 
 export function Account() {
 
-    const [userInfo, setUserInfo] = useState({firstName: "toto", lastName: "", eamil: "", password: "", isAdmin: "", avatar:"" })
+    const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", email: "", password: "", isAdmin: "", avatar: "" })
     const [loaded, setLoaded] = useState(false)
     const history = useHistory();
 
@@ -23,23 +23,23 @@ export function Account() {
 
     const token = localStorage.getItem('token');
 
-    if(!loaded){
-    const user = Axios({
-        method: "get",
-        url: "http://localhost:3000/api/auth/account",
-        headers: {
-            Authorization: "Bearer " + token
-        }
-    })
+    if (!loaded) {
+        const user = Axios({
+            method: "get",
+            url: "http://localhost:3000/api/auth/account",
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        })
 
-    console.log(user);
-    const data = user.then((result) => {
-     setUserInfo(result.data)
-     setLoaded(true)
-    });
-}
+        console.log(user);
+        user.then((result) => {
+            setUserInfo(result.data)
+            setLoaded(true)
+        });
+    }
     function deletId() {
-        const id = Axios({
+        Axios({
             method: "delete",
             url: "http://localhost:3000/api/auth/delete",
             headers: {

@@ -1,16 +1,46 @@
-const { Model, Sequelize } = require("sequelize");
+"use strict";
+const DataTypes = require("sequelize");
 
-class ModelsPost extends Model {}
-module.exports = (sequelize, Sequelize) => {
-ModelsPost = Post.create({
-  lastName: { type: String, required: true },
-  firstName: { type: String, required: true },
-  description: { type: String, required: true }, 
-  imageUrl: { type: String, required: true },
-  likes: { type: Number, required: true },
-  dislikes: { type: Number, required: true },
-  usersLiked: { type: Array, required: true },
-  usersDisliked: { type: Array, required: true },
-  comment: { type: Number, required: true }
-}, { sequelize, modelName: 'ModelsPost' });
-};
+const sequelize = require("../models/connexion");
+
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  }).catch((error) => {
+    console.error('Unable to connect to the database:', error);
+  });
+
+const Post = sequelize.define('Post', {
+  // Model attributes are defined here
+  title: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    required: true
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    required: true
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    required: true
+  },
+  comment: {
+    type: DataTypes.STRING,
+    required: true,
+    allowNull: true,
+  }
+});
+
+(async () => {
+  await sequelize.sync({ force: true });
+  // Code here
+})();
+
+ Post.sync({ force: true })
+
+console.log(Post === sequelize.models.Post);
+
+module.exports = Post;

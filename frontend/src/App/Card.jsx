@@ -1,6 +1,5 @@
 import React from "react";
 import "../styles/Cards.css";
-import food from "../img/food.jpg";
 import heartOutline from "../img/heart-outline.png";
 import heartFill from "../img/heart-fill.png";
 
@@ -16,7 +15,7 @@ export default function Card(props) {
           <div className="card-date">{props.date}</div>
         </div>
       </div>
-      <img className="card-image" src={food} alt="Logo" />
+      <img className="card-image" src={props.image} alt="Logo" />
       <div className="card-text">{props.description}</div>
       <div className="card-like-bar">
         {props.liked ? (
