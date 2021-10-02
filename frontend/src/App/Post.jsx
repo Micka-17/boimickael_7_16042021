@@ -7,7 +7,6 @@ import "../styles/Cards.css";
 import Card from './Card';
 import "../styles/Styles.css"
 import { useState, useCallback } from 'react'
-import FormPost from './FormPost';
 import Modal from '../utils/Modal';
 import Axios from 'axios';
 
@@ -15,36 +14,7 @@ import Axios from 'axios';
 
 export function Post(props) {
 
-    const [postInfo, setPostInfo] = useState({ author: "toto", title: "Try", date: "one", image: "url", description: "ici", file: '' })
-    const [loaded, setLoaded] = useState(false)
     const token = localStorage.getItem('token');
-
-    if (!loaded) {
-        const post = Axios({
-            method: "get",
-            url: "http://localhost:3000/api/posts/:id",
-            headers: {
-                Authorization: "Bearer " + token
-            }
-        })
-        post.then((result) => {
-            setPostInfo(result.data)
-            setLoaded(true)
-        });
-    }
-
-    // post model
-    const author = "Mickey";
-    /* const item = {
-        title: setPostInfo.title,
-        date: setPostInfo.date,
-        image: setPostInfo.image,
-        description: setPostInfo.description,
-    };
- */
-    console.log(postInfo);
-    const like = 193;
-    const isLiked = true;
 
     // useHistory and logout
     const history = useHistory();
@@ -52,6 +22,7 @@ export function Post(props) {
         e.preventDefault()
 
         localStorage.getItem('token');
+        localStorage.removeItem('token');
     }
 
     // do this with btn
@@ -67,8 +38,6 @@ export function Post(props) {
         e.preventDefault()
 
     }
-
-    const toto = 'toto'
 
     // return form and post like html
     return (
@@ -114,24 +83,12 @@ export function Post(props) {
             <div>
                 <div className="addPost m-5">
                     <Modal title="Dites nous tous !!!" onClose={toggleAdd}>
-                        <FormPost />
                     </Modal>
                 </div>
                 <div className="App">
-                    { postInfo != null 
-                    ?  <header className="App-header">
-                            <Card
-                                author={author}
-                                title={postInfo.title}
-                                date={postInfo.date}
-                                image={postInfo.image}
-                                description={postInfo.description}
-                                liked={isLiked}
-                                likeCount={like}
-                            />
+                    <header className="App-header">
+                            <Card />
                         </header>
-                    : 'C\'est vide ici!'
-                    }
                 </div>
             </div>
         </div>

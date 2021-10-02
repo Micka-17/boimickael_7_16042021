@@ -15,35 +15,21 @@ import Axios from 'axios'
 
 export default function BasicUsage() {
 
-  const [details, setDetails] = useState({ title: "", description: "", image: "", file: '' });
+  const [details, setDetails] = useState({ title: "", description: "", imageName: "", file: '' });
   const { isOpen, onOpen, onClose, onPost } = useDisclosure();
 
   const SubmitPost = function (e) {
     e.preventDefault()
 
-    /* const dataPost = {
-      title: document.querySelector('input.title').value,
-      description: document.querySelector('textarea.description').value,
-      image: document.querySelector('input.image').value,
-      file: document.querySelector('input.image')
-    } */
     console.log(details)
     const formData = new FormData();
     formData.append("title", details.title)
     formData.append("description", details.description)
-    formData.append("images", details.image)
-    formData.append("image", details.file)
+    formData.append("imageName", details.imageName) // nom de l'image
+    formData.append("image", details.file) // image vers api
     
-    //console.log(details.file.name);
-    console.log(details.image);
-
-    // object file : details.file
-    // todo upload server
-    /*.post(UPLOAD_URL, formData)
-    .then((res) => {
-      alert("File Upload success");
-    })
-    .catch((err) => alert("File Upload Error"));*/
+  
+    console.log("details de l'image " + details.imageName);
 
     const token = localStorage.getItem('token');
 
@@ -57,7 +43,7 @@ export default function BasicUsage() {
         } 
       }).then((response) => {
           alert("Publication prise en compte !")
-          console.log("la reponse de axios post " + JSON.stringify(response));
+          document.location.reload();
         })
         console.log("voici les data " + formData);
     } catch (e) {
@@ -87,7 +73,7 @@ export default function BasicUsage() {
               </div>
               <div className="form-group">
                 <label htmlFor="file-upload" class="custom-file-upload">Image : </label>
-                <input accept="image/*" type="file" id="image" name="image" className="form-control image" required onChange={e => setDetails({ ...details, image: e.target.value, file: e.target.files[0] })} value={details.image} />
+                <input accept="image/*" type="file" id="image" name="image" className="form-control image" required onChange={e => setDetails({ ...details, imageName: e.target.name, file: e.target.files[0] })} value={details.image} />
               </div>
             </form>
           </ModalBody>

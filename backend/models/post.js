@@ -1,6 +1,6 @@
 "use strict";
 const DataTypes = require("sequelize");
-
+const User = require('./user');
 const sequelize = require("../models/connexion");
 
 sequelize.authenticate()
@@ -12,6 +12,10 @@ sequelize.authenticate()
 
 const Post = sequelize.define('Post', {
   // Model attributes are defined here
+  User_Id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -22,7 +26,7 @@ const Post = sequelize.define('Post', {
     allowNull: true,
     required: true
   },
-  image: {
+  imageUrl: {
     type: DataTypes.STRING,
     allowNull: true,
     required: true
@@ -34,12 +38,20 @@ const Post = sequelize.define('Post', {
   }
 });
 
-(async () => {
+Post.belongsTo(User, {
+  as: "user",
+  foreignKey: "User_Id"
+});
+User.hasMany(Post, {
+  as: "posts"
+})
+
+/* (async () => {
   await sequelize.sync({ force: true });
   // Code here
-})();
+})(); */
 
- Post.sync({ force: true })
+//Post.sync({ force: true })
 
 console.log(Post === sequelize.models.Post);
 

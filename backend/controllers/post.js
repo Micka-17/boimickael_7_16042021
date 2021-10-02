@@ -5,7 +5,9 @@ const fs = require('fs');
 
 
 exports.getAllPost = (req, res, next) => {
-  Post.find()
+  Post.findAll({
+    include: ["user"]
+  })
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(400).json({ error }));
 };
@@ -22,20 +24,14 @@ exports.createPost = (req, res, next) => {
     where: {
       id: req.token.id
     }
-  }); 
-/*   const imageURL = `${req.protocol}://${req.get('host')}/images/${
-      req.file.filename
-    }`;
-    if (!imageURL) {
-      throw new Error(' Sorry, missing parameters');
-    } */
-console.log(Post);
+  });
+  console.log("req.user.id                                    ");
+  console.log(req.user);
   const post = new Post({
-    attributes: ["id", "title", "description", "image"],
-    _id: req.token.id,
+    User_Id: req.user.id,
     title: req.body.title,
     description: req.body.description,
-    image: req.body.image
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
   });
   post.save()
     .then(() => res.status(201).json({ message: 'Post enregistrée !' }))
@@ -72,59 +68,12 @@ exports.modifyPost = (req, res, next) => {
   }
 };
 
-exports.deletePost = (req, res, next) => {
-  Post.findOne({ _id: req.params.id })
-    .then(post => {
-      const filename = post.imageUrl.split('/images/')[1];
-      fs.unlink(`images/${filename}`, () => {
-        Post.deleteOne({ _id: req.params.id })
+exports.deletePost = (req, res) => {
+  Post.findOne({
+    where: { id: req.params.id }
+  })  
+        Post.destroy({ where: { id: req.params.id } })
           .then(() => res.status(200).json({ message: 'Post supprimée !' }))
-          .catch(error => res.status(400).json({ error }));
-      })
-    })
-    .catch(error => res.status(500).json({ error }));
-};
-
-exports.likePost = (req, res, next) => {
-  const userId = req.body.userId;
-  const like = req.body.like;
-  const postId = req.params.id;
-  Post.findOne({ _id: postId })
-    .then(posts => {
-
-      const newValues = {
-        usersLiked: posts.usersLiked,
-        usersDisliked: posts.usersDisliked,
-        likes: 0,
-        dislikes: 0
-      }
-
-      switch (like) {
-        case 1:
-          newValues.usersLiked.push(userId);
-          break;
-        case -1:
-          newValues.usersDisliked.push(userId);
-          break;
-        case 0:
-          if (newValues.usersLiked.includes(userId)) {
-
-            const index = newValues.usersLiked.indexOf(userId);
-            newValues.usersLiked.splice(index, 1);
-          } else {
-
-            const index = newValues.usersDisliked.indexOf(userId);
-            newValues.usersDisliked.splice(index, 1);
-          }
-          break;
-      };
-
-      newValues.likes = newValues.usersLiked.length;
-      newValues.dislikes = newValues.usersDisliked.length;
-      // check doc faute a SEB XD
-      Post.updateOne({ _id: postId }, newValues)
-        .then(() => res.status(200).json({ message: 'Post notée !' }))
-        .catch(error => res.status(400).json({ error }))
-    })
-    .catch(error => res.status(500).json({ error }));
+          .catch(error => res.status(400).json({ error: error.message }));
+ 
 };
