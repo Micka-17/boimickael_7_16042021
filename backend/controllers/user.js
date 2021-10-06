@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const Post = require('../models/post');
 
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
@@ -73,11 +74,15 @@ exports.getOneUser = (req, res, next) => {
 };
 
 exports.deleteUser = (req, res, next) => {
-    const id = req.params.id;
-    const user = User.findOne({ where: { id: req.token.id } });
-      User.destroy({ where: { id: req.token.id } });
-      res.status(200).json({ messageRetour: "utilisateur supprimé" });
-    
+  const posts = Post.destroy({
+    where: {
+      User_Id: req.token.id
+    }
+  }).then(() => {
+    return User.destroy({ where: { id: req.token.id } });
+  }).then(() => {
+    res.status(200).json({ messageRetour: "utilisateur supprimé" });
+  })
 }
 
 exports.modifyUser = (req, res, next) => {

@@ -1,4 +1,4 @@
-.lmj-banner {
+.lmj-banner2 {
     color: black;
     text-align: center;
     padding: 0px;
@@ -6,7 +6,7 @@
     border-bottom: solid 3px rgb(255, 0, 0);
 }
 
-.lmj-banner img {
-margin-top: -41px;
-margin-bottom: -70px;
+.lmj-banner2 img {
+margin-top: -50px;
+margin-bottom: -80px;
 }

@@ -47,7 +47,7 @@ exports.modifyPost = (req, res, next) => {
     Post.findOne({ _id: req.params.id })
       .then(post => {
         const filename = post.imageUrl.split('/images/')[1];
-        fs.unlink(`images/${filename}`, () => {
+        fs.unlink(__dirname + `/../images/${filename}`, () => {
           // une fois que l'ancienne image est supprimée dans le dossier /image, on peut mettre à jour le reste
           const postObject = {
             ...JSON.parse(req.body.post),
@@ -70,9 +70,13 @@ exports.modifyPost = (req, res, next) => {
 
 exports.deletePost = (req, res) => {
   Post.findOne({
-    where: { id: req.params.id }
+    where: { id: req.params.id },
   }).then((Delete) => {
     console.log(Delete);
+    const filename = Delete.imageUrl.split('/images/')[1];
+        fs.unlink(__dirname + `/../images/${filename}`,
+        (()=> {})
+        )
   if (req.token.id == Delete.User_Id || req.token.id == 1 ) {
     Post.destroy({ where: { id: req.params.id } })
       .then(() => res.status(200).json({ message: 'Post supprimée !' }))

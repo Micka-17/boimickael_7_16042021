@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle, faSignOutAlt, faHome } from '@fortawesome/free-solid-svg-icons'
 import '../styles/Header.css'
-import header from "../Groupomania_Logos/icon-left-font.png"
 import { Link, useHistory } from "react-router-dom";
 import "../styles/Cards.css";
 import Card from './Card';
@@ -9,6 +8,7 @@ import "../styles/Styles.css"
 import { useState, useCallback } from 'react'
 import Modal from '../utils/Modal';
 import Axios from 'axios';
+import Banner from './Banner2';
 
 
 
@@ -44,9 +44,7 @@ export function Post(props) {
         <div>
             <div className="headers">
                 <div className="d-flex justify-content-between m-5">
-                    <div className="h1 center dflex">
-                        <img className="header" src={header} height={350} width={350} alt="logoGroupomania" />
-                    </div>
+                <Banner />
                     <div className="iconRight m-5">
                         <ul className="nav">
                             <Link to="/post">

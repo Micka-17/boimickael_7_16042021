@@ -1,0 +1,48 @@
+.lmj-banner {
+    color: black;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+.lmj-banner img {
+margin-top: -108px;
+margin-bottom: -80px;
+}
+
+@media (max-width: 511px) {
+    .iconUser {
+        max-height: 30px;
+    }
+    .lmj-banner img {
+        max-width: 100px;
+        margin-top: -18px;
+        }
+    
+}
+
+@media (max-width: 385px) {
+    .lmj-banner img {
+        max-width: 100px;
+        margin-top: -18px;
+        }
+    .iconRight {
+        max-width: 100px;
+        margin: 0;
+    }
+    .nav0 button {
+        position: absolute;
+        top: 0;
+        right: 110px;
+    }
+    .nav1 button {
+        position: absolute;
+        top: 0;
+        right: 45px;
+    } 
+    .nav2 button {
+        position: absolute;
+        top: 0;
+        right: 10px;
+    }
+}

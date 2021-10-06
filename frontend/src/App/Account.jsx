@@ -7,6 +7,8 @@ import Axios from 'axios'
 import { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Banner from './Banner2';
+
 
 export function Account() {
 
@@ -52,6 +54,7 @@ export function Account() {
             window.setTimeout(function () { document.location.reload() }, 5000);
             toast("Compte supprimer. :'(");
             console.log(response);
+            localStorage.getItem('token');
             localStorage.removeItem('token');
             history.push("/main");
         })
@@ -67,9 +70,7 @@ export function Account() {
         <div>
             <div className="headers">
                 <div className="d-flex justify-content-between m-5">
-                    <div className="h1 center dflex">
-                        <img className="header" src={header} height={350} width={350} alt="logoGroupomania" />
-                    </div>
+                    <Banner />
                     <div className="iconRight m-5">
                         <ul className="nav">
                             <Link to="/post">
@@ -120,12 +121,12 @@ export function Account() {
                         >
                             Supprimer le compte
                         </button>
-                        <button
+                        {/* <button
                             type="button"
                             className="m-4 btn btn-primary"
                         >
                             Modifier le compte
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </div>

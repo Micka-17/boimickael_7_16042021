@@ -45,13 +45,13 @@ export default function Card(props) {
 
   // Boucle for juste ici <========================
   return (
-    <div className="App d-flex flex-wrap justify-content-around">
+    <div className="App d-flex flex-wrap justify-content-around flex-row-reverse">
       {postInfo != null
         ?
         postInfo.map(info => {
           const { id, title, user, date, description, imageUrl } = info
           return (
-            <div key={title}>
+            <div className="overflow-hidden" key={title}>
               <div className="card m-2">
                 <div className="card-header">
                   <div className="profile">
