@@ -5,6 +5,8 @@ import header from "../Groupomania_Logos/icon-left-font.png"
 import { Link, useHistory } from "react-router-dom"
 import Axios from 'axios'
 import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export function Account() {
 
@@ -39,6 +41,7 @@ export function Account() {
         });
     }
     function deletId() {
+        try {
         Axios({
             method: "delete",
             url: "http://localhost:3000/api/auth/delete",
@@ -46,11 +49,18 @@ export function Account() {
                 Authorization: "Bearer " + token
             }
         }).then(function (response) {
+            window.setTimeout(function () { document.location.reload() }, 5000);
+            toast("Compte supprimer. :'(");
             console.log(response);
             localStorage.removeItem('token');
             history.push("/main");
-            document.location.reload();
         })
+        } catch (e) {
+            console.log(e);
+            const error29 = (e.response.data.error);
+            console.log(error29);
+            toast(error29);
+        }
     }
 
     return (
@@ -99,8 +109,8 @@ export function Account() {
                         <li className="list-group-item">Email : {userInfo.email}</li>
                         <li className="list-group-item">lastname : {userInfo.lastName}</li>
                         <li className="list-group-item">firstname : {userInfo.firstName}</li>
-                        <li className="list-group-item">Admin : {userInfo.isAdmin}</li>
-                        <li className="list-group-item">Avatar : {userInfo.avatar}</li>
+                        {/* <li className="list-group-item">Admin : {userInfo.isAdmin}</li>
+                        <li className="list-group-item">Avatar : {userInfo.avatar}</li> */}
                     </ul>
                     <div className="card-body">
                         <button

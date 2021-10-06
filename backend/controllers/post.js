@@ -71,9 +71,15 @@ exports.modifyPost = (req, res, next) => {
 exports.deletePost = (req, res) => {
   Post.findOne({
     where: { id: req.params.id }
-  })  
-        Post.destroy({ where: { id: req.params.id } })
-          .then(() => res.status(200).json({ message: 'Post supprimée !' }))
-          .catch(error => res.status(400).json({ error: error.message }));
- 
+  }).then((Delete) => {
+    console.log(Delete);
+  if (req.token.id == Delete.User_Id || req.token.id == 1 ) {
+    Post.destroy({ where: { id: req.params.id } })
+      .then(() => res.status(200).json({ message: 'Post supprimée !' }))
+      .catch(error => res.status(400).json({ error: error.message }));
+  }
+ else {
+  return res.status(401).json({ error: 'Ce n\'est pas ton post !!!' });
+  }
+  })
 };

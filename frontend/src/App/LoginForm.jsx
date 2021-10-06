@@ -1,6 +1,8 @@
 import { React } from "react"
 import Axios from 'axios'
 import { useHistory } from "react-router-dom"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 export function LoginForm() {
@@ -24,12 +26,10 @@ export function LoginForm() {
                     console.log(response);
                     localStorage.setItem('token', response.data.token);
                     history.push("/post");
-                    document.location.reload();
                 })
         } catch (e) {
-            console.log(e);
             const error28 = (e.response.data.error);
-            console.log(error28);
+            toast(error28);
         }
     }
 

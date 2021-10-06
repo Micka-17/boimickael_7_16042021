@@ -87,8 +87,8 @@ export function Post(props) {
                 </div>
                 <div className="App">
                     <header className="App-header">
-                            <Card />
-                        </header>
+                        <Card />
+                    </header>
                 </div>
             </div>
         </div>

@@ -12,11 +12,16 @@ import {
 import { React, useState } from "react"
 import 'bootstrap/dist/css/bootstrap.css'
 import Axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function BasicUsage() {
 
   const [details, setDetails] = useState({ title: "", description: "", imageName: "", file: '' });
   const { isOpen, onOpen, onClose, onPost } = useDisclosure();
+  const notify = () => {
+    toast("Jolie Post");
+  }
 
   const SubmitPost = function (e) {
     e.preventDefault()
@@ -27,8 +32,8 @@ export default function BasicUsage() {
     formData.append("description", details.description)
     formData.append("imageName", details.imageName) // nom de l'image
     formData.append("image", details.file) // image vers api
-    
-  
+
+
     console.log("details de l'image " + details.imageName);
 
     const token = localStorage.getItem('token');
@@ -40,12 +45,12 @@ export default function BasicUsage() {
         data: formData,
         headers: {
           Authorization: "Bearer " + token
-        } 
+        }
       }).then((response) => {
-          alert("Publication prise en compte !")
-          document.location.reload();
-        })
-        console.log("voici les data " + formData);
+        window.setTimeout(function () { document.location.reload() }, 5000);
+        toast("Jolie Post");
+      })
+      console.log("voici les data " + formData);
     } catch (e) {
       console.log(e);
       const error28 = (e.response.data.error);
@@ -82,6 +87,7 @@ export default function BasicUsage() {
               Close
             </Button>
             <Button onClick={SubmitPost} type="submit" variant="ghost">Publié</Button>
+            <ToastContainer />
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -20,16 +20,16 @@ export default function App() {
 
   return (
     <ChakraProvider>
-    <Router>
-      <GuardProvider guards={[requireLogin]} error={Main} >
-        <Switch>
-          <GuardedRoute path="/main" component={Main} />
+      <Router>
+        <GuardProvider guards={[requireLogin]} error={Main} >
+          <Switch>
+            <GuardedRoute path="/main" component={Main} />
             <GuardedRoute path="/post" component={Post} />
-          <GuardedRoute path="/account" component={Account} />
-          <GuardedRoute path="/" component={NotFound} />
-        </Switch>
-      </GuardProvider>
-    </Router>
+            <GuardedRoute path="/account" component={Account} />
+            <GuardedRoute path="/" component={NotFound} />
+          </Switch>
+        </GuardProvider>
+      </Router>
     </ChakraProvider>
   )
 };
