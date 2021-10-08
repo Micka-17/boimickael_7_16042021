@@ -73,11 +73,12 @@ exports.deletePost = (req, res) => {
     where: { id: req.params.id },
   }).then((Delete) => {
     console.log(Delete);
+    if (req.token.id == Delete.User_Id || req.token.id == 1 ) {
     const filename = Delete.imageUrl.split('/images/')[1];
         fs.unlink(__dirname + `/../images/${filename}`,
         (()=> {})
         )
-  if (req.token.id == Delete.User_Id || req.token.id == 1 ) {
+  
     Post.destroy({ where: { id: req.params.id } })
       .then(() => res.status(200).json({ message: 'Post supprimée !' }))
       .catch(error => res.status(400).json({ error: error.message }));
