@@ -10,9 +10,12 @@ exports.signup = (req, res, next) => {
       const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        bio: req.body.bio,
         email: req.body.email,
         password: hash,
-        isAdmin: false
+        isModo: false,
+        isAdmin: false,
+        isSuperAdmin: false,
       });
       const token =
         "Bearer " +
@@ -24,7 +27,10 @@ exports.signup = (req, res, next) => {
           user_id: user.id,
           email: user.email,
           username: user.username,
+          bio: user.bio,
+          isModo: user.isModo,
           isAdmin: user.isAdmin,
+          isSuperAdmin: user.isSuperAdmin,
           role: user.role,
           token
         }))
@@ -65,7 +71,7 @@ exports.login = (req, res, next) => {
 
 exports.getOneUser = (req, res, next) => {
   User.findOne({
-    attributes: ["id", "email", "lastName", "firstName", "isAdmin", "avatar", "password"],
+    attributes: ["id", "email", "lastName", "firstName", "bio", "isModo", "isAdmin", "isSuperAdmin", "avatar", "password"],
     where: {
       id: req.token.id
     }
@@ -110,4 +116,9 @@ exports.modifyUser = (req, res, next) => {
       .then(() => res.status(200).json({ message: 'user modifiée!' }))
       .catch(error => res.status(400).json({ error }));
   }
+};
+
+exports.getAllUser = (req, res, next) => {
+  User.findAll({}).then(post => res.status(200).json(post))
+    .catch(error => res.status(404).json({ error }));
 };

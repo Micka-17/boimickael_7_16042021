@@ -24,6 +24,11 @@ const User = sequelize.define('User', {
     isAlpha: true,
     len: [2, 15]
   },
+  bio: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    isAlpha: true,
+  },
   email: {
     type: DataTypes.STRING(64),
     allowNull: false,
@@ -37,7 +42,13 @@ const User = sequelize.define('User', {
     allowNull: false,
     len: [8, 55]
   },
+  isModo: {
+    type: DataTypes.BOOLEAN,
+  },
   isAdmin: {
+    type: DataTypes.BOOLEAN,
+  },
+  isSuperAdmin: {
     type: DataTypes.BOOLEAN,
   },
   avatar: {

@@ -12,6 +12,8 @@ router.get('/account', auth, userCtrl.getOneUser);
 
 router.put('/user', auth, userCtrl.modifyUser);
 
+router.get('/users', auth, userCtrl.getAllUser);
+
 router.delete('/delete', auth, userCtrl.deleteUser);
 
 module.exports = router;
