@@ -16,4 +16,6 @@ router.get('/users', auth, userCtrl.getAllUser);
 
 router.delete('/delete', auth, userCtrl.deleteUser);
 
+router.put('/manageuser/:id', auth, userCtrl.modifyUserById);
+
 module.exports = router;

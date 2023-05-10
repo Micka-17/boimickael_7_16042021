@@ -29,12 +29,12 @@ const Post = sequelize.define('Post', {
   imageUrl: {
     type: DataTypes.STRING,
     allowNull: true,
-    required: true
+    required: false,
   },
   comment: {
     type: DataTypes.STRING,
     required: true,
-    allowNull: true,
+    allowNull: false,
   }
 });
 

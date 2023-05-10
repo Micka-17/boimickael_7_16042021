@@ -122,3 +122,60 @@ exports.getAllUser = (req, res, next) => {
   User.findAll({}).then(post => res.status(200).json(post))
     .catch(error => res.status(404).json({ error }));
 };
+
+exports.deleteUserById = (req, res, next) => {
+  const userId = req.params.userId;
+  User.destroy({
+    where: {
+      id: userId
+    }
+  })
+    .then(() => res.status(200).json({ message: "Utilisateur supprimé avec succès" }))
+    .catch(error => res.status(500).json({ error })
+  );
+}
+
+exports.modifyUserById = (req, res, next) => {
+  const userId = req.params.id;
+  console.log(userId);
+  if (req.file) {
+    // Si l'image est modifiée, il faut supprimer l'ancienne image dans le dossier /images
+    User.findByPk(userId)
+      .then(user => {
+        if (user.imageUrl) {
+          const filename = user.imageUrl.split('/images/')[1];
+          fs.unlink(`images/${filename}`, () => {
+            // Une fois que l'ancienne image est supprimée dans le dossier /images, on peut mettre à jour le reste
+            const updatedUser = {
+              ...req.body,
+              imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            };
+            updateUser(userId, updatedUser, res);
+          });
+        } else {
+          // Si l'utilisateur n'a pas d'ancienne image, on peut directement mettre à jour le reste
+          const updatedUser = {
+            ...req.body,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+          };
+          updateUser(userId, updatedUser, res);
+        }
+      })
+      .catch(error => res.status(500).json({ error }));
+  } else {
+    // Si l'image n'est pas modifiée
+    const updatedUser = { ...req.body };
+    updateUser(userId, updatedUser, res);
+  }
+};
+
+// Fonction pour mettre à jour l'utilisateur dans la base de données
+const updateUser = (userId, updatedUser, res) => {
+  User.update(updatedUser, {
+    where: {
+      id: userId
+    }
+  })
+    .then(() => res.status(200).json({ message: "Utilisateur modifié avec succès" }))
+    .catch(error => res.status(500).json({ error }));
+};
